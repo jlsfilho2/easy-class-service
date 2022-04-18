@@ -10,4 +10,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetTeacherService"]
 
+[function_build_definitions.22c1acf9-bcaf-417b-b714-014b7c7b27c5]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/SaveTeacherService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "saveteacher.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SaveTeacherService"]
+
 [layer_build_definitions]
