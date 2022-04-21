@@ -1,1 +1,1 @@
-include 'GetTeacherService', 'SaveTeacherService' , 'Commons'
+include 'GetTeacherService', 'SaveTeacherService' , 'GetStudentService', 'SaveStudentService', 'Commons'
