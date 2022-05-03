@@ -12,10 +12,13 @@ data class Lesson(
     var lessonId: String = "",
     @DynamoDBHashKey(attributeName = "subjectId")
     var subjectId: String,
+    var subject: Subject,
     @DynamoDBHashKey(attributeName = "studentId")
     var studentId: String,
+    var student: Student,
     @DynamoDBHashKey(attributeName = "teacherId")
     var teacherId: String,
+    var teacher: Teacher,
     @DynamoDBAttribute(attributeName = "price")
     var price: Int = 0,
     @DynamoDBAttribute(attributeName = "status")
