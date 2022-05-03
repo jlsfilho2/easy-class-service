@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Commons" />
+            <option value="$PROJECT_DIR$/GetLessonService" />
             <option value="$PROJECT_DIR$/GetStudentService" />
             <option value="$PROJECT_DIR$/GetTeacherService" />
             <option value="$PROJECT_DIR$/SaveStudentService" />
