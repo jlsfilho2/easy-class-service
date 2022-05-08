@@ -6,7 +6,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import dynamo.DynamoDBUtils
 import models.Teacher
-import utils.generateUUID
+import requests.generateUUID
 import java.io.IOException
 
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {

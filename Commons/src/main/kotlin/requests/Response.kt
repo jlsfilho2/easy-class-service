@@ -1,4 +1,4 @@
-package utils
+package requests
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 

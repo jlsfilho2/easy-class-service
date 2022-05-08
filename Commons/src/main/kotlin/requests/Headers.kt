@@ -1,4 +1,4 @@
-package utils
+package requests
 
 val headers: Map<String, String> = mapOf(
     "Access-Control-Allow-Headers" to "Content-Type",

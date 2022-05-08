@@ -1,4 +1,4 @@
-package getteacher
+package teacher
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
@@ -32,11 +32,10 @@ private fun getTeacherById(teacherId: String): String? {
 
 private fun getTeacherBySubject(subjectId: String): String? {
     val eav = mapOf<String, AttributeValue>(
-        "subjectId" to AttributeValue().withN(subjectId),
-        "teacher" to AttributeValue().withS("Teacher")
+        ":subjects" to AttributeValue().withS(subjectId)
     )
     val scanExpression = DynamoDBScanExpression()
-        .withFilterExpression("subjectId = $subjectId")
+        .withFilterExpression("contains(subjects, :subjects)")
         .withExpressionAttributeValues(eav)
     val featuredTeachers: List<Teacher> = DynamoDBUtils.mapper.scan(Teacher::class.java, scanExpression)
     return DynamoDBUtils.objectMapper.writeValueAsString(featuredTeachers)
@@ -44,8 +43,7 @@ private fun getTeacherBySubject(subjectId: String): String? {
 
 private fun getFeaturedTeacherBySubject(subjectId: String?): String? {
     val eav = mapOf<String, AttributeValue>(
-        "subjectId" to AttributeValue().withN(subjectId),
-        "teacher" to AttributeValue().withS("Teacher")
+        "subjects" to AttributeValue().withSS(subjectId)
     )
     val scanExpression = DynamoDBScanExpression()
         .withFilterExpression("subjectId = $subjectId")
