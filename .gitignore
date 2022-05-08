@@ -75,5 +75,5 @@ outTmp/
 kotlin-ide/
 .aws/
 samconfig.toml
-.aws-sam/
-.gradle/
+/.aws-sam/
+/build

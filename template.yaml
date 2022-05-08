@@ -11,11 +11,21 @@ Globals:
     Timeout: 20
 
 Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'POST, GET, PUT'"
+        AllowHeaders: "'X-Forwarded-For'"
+        AllowOrigin: "'http://localhost:3000'"
+        MaxAge: "'600'"
+        AllowCredentials: true
   GetTeacherService:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: GetTeacherService
-      Handler: getteacher.App::handleRequest
+      Handler: app.App::handleRequest
       Runtime: java11
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -27,6 +37,7 @@ Resources:
           Properties:
             Path: /teacher
             Method: get
+            RestApiId: !Ref ApiGatewayApi
       Policies:
         - Statement:
             - Sid: DynamoDBWritePolicy
@@ -51,6 +62,7 @@ Resources:
           Properties:
             Path: /teacher
             Method: post
+            RestApiId: !Ref ApiGatewayApi
       Policies:
         - Statement:
             - Sid: DynamoDBWritePolicy
@@ -75,6 +87,7 @@ Resources:
           Properties:
             Path: /student
             Method: get
+            RestApiId: !Ref ApiGatewayApi
       Policies:
         - Statement:
             - Sid: DynamoDBWritePolicy
@@ -99,6 +112,7 @@ Resources:
           Properties:
             Path: /student
             Method: post
+            RestApiId: !Ref ApiGatewayApi
       Policies:
         - Statement:
             - Sid: DynamoDBWritePolicy

@@ -5,7 +5,7 @@
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "getteacher.App::handleRequest"
+handler = "app.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetTeacherService"]

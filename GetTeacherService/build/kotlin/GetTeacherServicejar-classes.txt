@@ -1,1 +1,1 @@
-/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService/build/classes/kotlin/main/getteacher/App.class
+/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService/build/classes/kotlin/main/app/App.class:/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService/build/classes/kotlin/main/getteacher/GetTeacherKt.class
