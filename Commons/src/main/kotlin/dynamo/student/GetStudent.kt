@@ -1,10 +1,10 @@
-package student
+package dynamo.student
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import dynamo.DynamoDBUtils
-import models.Lesson
-import models.Student
+import models.lesson.Lesson
+import models.student.Student
 
 fun getAllStudents(): String? {
     val scanExpression = DynamoDBScanExpression()

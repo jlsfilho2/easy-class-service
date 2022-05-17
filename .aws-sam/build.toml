@@ -37,4 +37,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["SaveStudentService"]
 
+[function_build_definitions.8582457b-74fa-4b9b-9604-b42997d148eb]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/RegisterUserService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "registeruser.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["RegisterUserService"]
+
 [layer_build_definitions]
