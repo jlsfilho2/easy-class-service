@@ -4,4 +4,5 @@ include 'GetTeacherService',
         'SaveStudentService',
         'GetLessonService',
         'RegisterUserService',
+        'LoginService',
         'Commons'

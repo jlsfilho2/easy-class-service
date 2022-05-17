@@ -46,4 +46,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["RegisterUserService"]
 
+[function_build_definitions.a8153b27-f31a-4e73-89b7-42736517c079]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/LoginService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["LoginService"]
+
 [layer_build_definitions]
