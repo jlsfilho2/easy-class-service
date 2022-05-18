@@ -4,18 +4,17 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import teacher.getTeacher
+import dynamo.teacher.getTeacher
 import requests.requestResponse
 import java.io.IOException
 
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
-        val subjectId = input?.queryStringParameters?.get("subjectId").orEmpty()
-        val isFeatured = input?.queryStringParameters?.get("isFeatured").orEmpty().toBoolean()
+        val subject = input?.queryStringParameters?.get("subject").orEmpty()
         val teacherId = input?.queryStringParameters?.get("teacherId").orEmpty()
 
-        val data = getTeacher(teacherId, subjectId, isFeatured)
+        val data = getTeacher(teacherId, subject)
 
         return try {
             requestResponse(data = data.orEmpty(), status = 200)
@@ -23,6 +22,4 @@ class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseE
             requestResponse(data = null, status = 500)
         }
     }
-
-
 }

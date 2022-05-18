@@ -5,14 +5,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import dynamo.DynamoDBUtils
-import models.Teacher
+import models.teacher.TeacherDAO
 import requests.generateUUID
 import java.io.IOException
 
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
-        val teacher = DynamoDBUtils.objectMapper.readValue(input?.body, Teacher::class.java)
+        val teacher = DynamoDBUtils.objectMapper.readValue(input?.body, TeacherDAO::class.java)
         teacher.teacherId = generateUUID()
         DynamoDBUtils.mapper.save(teacher)
 

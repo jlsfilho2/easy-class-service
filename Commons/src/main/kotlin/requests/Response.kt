@@ -2,7 +2,7 @@ package requests
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 
-fun requestResponse(data: String?, status: Int): APIGatewayProxyResponseEvent {
+fun requestResponse(data: String? = null, status: Int): APIGatewayProxyResponseEvent {
     return APIGatewayProxyResponseEvent()
         .withBody(data)
         .withHeaders(headers)
