@@ -55,4 +55,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["LoginService"]
 
+[function_build_definitions.93808bca-0b5e-43b9-9f9c-499dd41f897a]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/SendLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "lessonrequest.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SendLessonRequestService"]
+
 [layer_build_definitions]

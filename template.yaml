@@ -172,3 +172,28 @@ Resources:
                 - dynamodb:*
               Resource:
                 - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/user"
+  SendLessonRequestService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: SendLessonRequestService
+      Handler: lessonrequest.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        SendLessonRequest:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /lesson-request
+            Method: post
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lessonrequest"
