@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable
 
-@DynamoDBTable(tableName = "dynamo/student")
+@DynamoDBTable(tableName = "student")
 data class Student(
     @DynamoDBHashKey(attributeName = "studentId")
     var studentId: String = "",
