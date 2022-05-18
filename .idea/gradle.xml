@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/GetLessonService" />
             <option value="$PROJECT_DIR$/GetStudentService" />
             <option value="$PROJECT_DIR$/GetTeacherService" />
+            <option value="$PROJECT_DIR$/LoginService" />
             <option value="$PROJECT_DIR$/RegisterUserService" />
             <option value="$PROJECT_DIR$/SaveStudentService" />
             <option value="$PROJECT_DIR$/SaveTeacherService" />
