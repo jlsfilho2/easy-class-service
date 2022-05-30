@@ -23,5 +23,10 @@ open class User(
     @DynamoDBAttribute(attributeName = "userRemoteId")
     var userRemoteId: String = "",
     @DynamoDBAttribute(attributeName = "role")
-    var role: String = ""
+    var role: String = "",
+    @DynamoDBAttribute(attributeName = "photoUrl")
+    var photoUrl: String = "",
+    @DynamoDBAttribute(attributeName = "subject")
+    var subject: List<String> = listOf()
+
 )

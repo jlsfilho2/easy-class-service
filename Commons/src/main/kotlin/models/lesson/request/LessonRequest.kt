@@ -22,4 +22,6 @@ class LessonRequest(
     var subject: String = "",
     @DynamoDBAttribute(attributeName = "hourlyPrice")
     var hourlyPrice: Int = 0,
+    @DynamoDBAttribute(attributeName = "status")
+    var status: String = ""
 )

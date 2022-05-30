@@ -5,7 +5,7 @@
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetTeacherService"]
@@ -23,7 +23,7 @@ functions = ["SaveTeacherService"]
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetStudentService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetStudentService"]
@@ -50,7 +50,7 @@ functions = ["RegisterUserService"]
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/LoginService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["LoginService"]
@@ -63,5 +63,14 @@ handler = "lessonrequest.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["SendLessonRequestService"]
+
+[function_build_definitions.34c85e2b-4056-408b-b318-1ea81a50fe7c]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/ResponseLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "response.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ResponseLessonRequestService"]
 
 [layer_build_definitions]
