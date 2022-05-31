@@ -13,10 +13,10 @@ class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseE
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
         val repository = LessonRepository()
 
-        if (input?.body == null) {
-            return requestResponse(data = "Your request body can't be empty", status = 400)
-        } else {
+        if (input?.body != null) {
             repository.sendLessonRequest(input.body)
+        } else {
+            return requestResponse(data = "Your request body can't be empty", status = 400)
         }
 
         return try {
