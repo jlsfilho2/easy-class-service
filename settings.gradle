@@ -7,4 +7,5 @@ include 'GetTeacherService',
         'LoginService',
         'SendLessonRequestService',
         'ResponseLessonRequestService',
+        'GetUserService',
         'Commons'
