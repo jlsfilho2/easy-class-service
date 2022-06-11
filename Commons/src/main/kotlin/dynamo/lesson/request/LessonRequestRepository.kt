@@ -1,7 +1,10 @@
 package dynamo.lesson.request
 
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest
+import com.amazonaws.services.dynamodbv2.model.AttributeValueUpdate
+import com.amazonaws.services.dynamodbv2.model.UpdateItemRequest
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import dynamo.DynamoDBUtils
 import dynamo.lesson.LessonUseCase
 import models.lesson.request.LessonRequest
@@ -19,17 +22,19 @@ class LessonRequestRepository : LessonRequestService {
     }
 
     override fun sendLessonRequestResponse(requestBody: String) {
-        val deserializedRequestBody = requestBody to LessonRequestResponse()
-        val lessonRequestResponse = deserializedRequestBody.second
+        val mapper = jacksonObjectMapper()
+        val lessonRequestResponse = mapper.readValue<LessonRequestResponse>(requestBody)
         when (lessonRequestResponse.lessonRequestStatus) {
-            LessonRequestStatus.ACCEPTED.toString() -> {
+            LessonRequestStatus.ACCEPTED.name -> {
+                println("Entrou no accepted")
                 updateLessonRequestStatus(lessonRequestResponse)
                 LessonUseCase.createLesson(lessonRequestResponse)
             }
-            LessonRequestStatus.DENIED.toString() -> {
+            LessonRequestStatus.DENIED.name -> {
+                println("Entrou no denied")
                 updateLessonRequestStatus(lessonRequestResponse)
             }
-            LessonRequestStatus.PENDING.toString() -> {
+            LessonRequestStatus.PENDING.name -> {
                 /* LESSON REQUEST STATUS CAN ONLY BE SWITCHED TO PENDING ON CREATION  */
             }
         }
@@ -38,19 +43,23 @@ class LessonRequestRepository : LessonRequestService {
     override fun updateLessonRequestStatus(lessonRequestResponse: LessonRequestResponse) {
         val lessonRequest = getLessonRequest(lessonRequestResponse.lessonRequestId)
         lessonRequest.status = lessonRequestResponse.lessonRequestStatus
-        val putItemRequest = makeUpdateLessonRequestStatusPutItemRequest(lessonRequestResponse.lessonRequestId, lessonRequestResponse.lessonRequestStatus)
-        DynamoDBUtils.dynamoDB.putItem(putItemRequest)
+        val updateItemRequest = makeUpdateLessonRequest(lessonRequestResponse.lessonRequestId, lessonRequestResponse.lessonRequestStatus)
+        DynamoDBUtils.dynamoDB.updateItem(updateItemRequest)
     }
 
     override fun getLessonRequest(lessonRequestId: String): LessonRequest {
         return DynamoDBUtils.mapper.load(LessonRequest::class.java, lessonRequestId)
     }
 
-    private fun makeUpdateLessonRequestStatusPutItemRequest(lessonRequestId: String, status: String): PutItemRequest {
-        val putItemRequest = PutItemRequest()
-        putItemRequest.item = mapOf<String, AttributeValue>(
-            "lessonRequestId" to AttributeValue().withS(lessonRequestId),
-            "status" to AttributeValue().withS(status))
-        return putItemRequest
+    private fun makeUpdateLessonRequest(lessonRequestId: String, status: String): UpdateItemRequest {
+        val tableName = "lessonrequest"
+        val itemKey = mapOf<String, AttributeValue>(
+            "lessonRequestId" to AttributeValue().withS(lessonRequestId)
+        )
+        val statusAttributeValue = AttributeValue().withS(status)
+        val updatedValues = mutableMapOf<String, AttributeValueUpdate>(
+            "status" to AttributeValueUpdate().withValue(statusAttributeValue)
+        )
+        return UpdateItemRequest(tableName, itemKey, updatedValues)
     }
 }
