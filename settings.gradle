@@ -8,4 +8,5 @@ include 'GetTeacherService',
         'SendLessonRequestService',
         'ResponseLessonRequestService',
         'GetUserService',
+        'GetLessonRequestService',
         'Commons'

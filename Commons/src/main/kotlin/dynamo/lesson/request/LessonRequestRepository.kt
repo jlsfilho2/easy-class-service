@@ -1,8 +1,11 @@
 package dynamo.lesson.request
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.AttributeValueUpdate
 import com.amazonaws.services.dynamodbv2.model.UpdateItemRequest
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dynamo.DynamoDBUtils
@@ -12,7 +15,9 @@ import models.lesson.request.LessonRequestStatus
 import models.lesson.response.LessonRequestResponse
 import requests.generateUUID
 
-class LessonRequestRepository : LessonRequestService {
+class LessonRequestRepository(
+    private val mapper: ObjectMapper = jacksonObjectMapper()
+) : LessonRequestService {
 
     override fun sendLessonRequest(requestBody: String) {
         val lessonRequest = DynamoDBUtils.objectMapper.readValue(requestBody, LessonRequest::class.java)
@@ -22,16 +27,13 @@ class LessonRequestRepository : LessonRequestService {
     }
 
     override fun sendLessonRequestResponse(requestBody: String) {
-        val mapper = jacksonObjectMapper()
         val lessonRequestResponse = mapper.readValue<LessonRequestResponse>(requestBody)
         when (lessonRequestResponse.lessonRequestStatus) {
             LessonRequestStatus.ACCEPTED.name -> {
-                println("Entrou no accepted")
                 updateLessonRequestStatus(lessonRequestResponse)
                 LessonUseCase.createLesson(lessonRequestResponse)
             }
             LessonRequestStatus.DENIED.name -> {
-                println("Entrou no denied")
                 updateLessonRequestStatus(lessonRequestResponse)
             }
             LessonRequestStatus.PENDING.name -> {
@@ -41,14 +43,39 @@ class LessonRequestRepository : LessonRequestService {
     }
 
     override fun updateLessonRequestStatus(lessonRequestResponse: LessonRequestResponse) {
-        val lessonRequest = getLessonRequest(lessonRequestResponse.lessonRequestId)
-        lessonRequest.status = lessonRequestResponse.lessonRequestStatus
         val updateItemRequest = makeUpdateLessonRequest(lessonRequestResponse.lessonRequestId, lessonRequestResponse.lessonRequestStatus)
         DynamoDBUtils.dynamoDB.updateItem(updateItemRequest)
     }
 
-    override fun getLessonRequest(lessonRequestId: String): LessonRequest {
-        return DynamoDBUtils.mapper.load(LessonRequest::class.java, lessonRequestId)
+    override fun getLessonRequestById(lessonRequestId: String): String? {
+        val lessonRequest = DynamoDBUtils.mapper.load(LessonRequest::class.java, lessonRequestId)
+        return DynamoDBUtils.objectMapper.writeValueAsString(lessonRequest)
+    }
+
+    override fun getLessonRequestByTeacherId(teacherId: String): String? {
+        val eav = mapOf<String, AttributeValue>(
+            ":teacherId" to AttributeValue().withS(teacherId)
+        )
+        val scanExpression = DynamoDBScanExpression()
+            .withFilterExpression("teacherId = :teacherId")
+            .withExpressionAttributeValues(eav)
+        val lessonRequest = getLessonRequestWithScanExpression(scanExpression)
+        return DynamoDBUtils.objectMapper.writeValueAsString(lessonRequest)
+    }
+
+    override fun getLessonRequestByStudentId(studentId: String): String? {
+        val eav = mapOf<String, AttributeValue>(
+            ":studentId" to AttributeValue().withS(studentId)
+        )
+        val scanExpression = DynamoDBScanExpression()
+            .withFilterExpression("studentId = :studentId")
+            .withExpressionAttributeValues(eav)
+        val lessonRequest = getLessonRequestWithScanExpression(scanExpression)
+        return DynamoDBUtils.objectMapper.writeValueAsString(lessonRequest)
+    }
+
+    private fun getLessonRequestWithScanExpression(scanExpression: DynamoDBScanExpression): PaginatedScanList<LessonRequest>? {
+        return DynamoDBUtils.mapper.scan(LessonRequest::class.java, scanExpression)
     }
 
     private fun makeUpdateLessonRequest(lessonRequestId: String, status: String): UpdateItemRequest {

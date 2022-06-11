@@ -7,5 +7,7 @@ interface LessonRequestService {
     fun sendLessonRequest(requestBody: String)
     fun sendLessonRequestResponse(requestBody: String)
     fun updateLessonRequestStatus(lessonRequestResponse: LessonRequestResponse)
-    fun getLessonRequest(lessonRequestId: String): LessonRequest
+    fun getLessonRequestById(lessonRequestId: String): String?
+    fun getLessonRequestByTeacherId(teacherId: String): String?
+    fun getLessonRequestByStudentId(studentId: String): String?
 }

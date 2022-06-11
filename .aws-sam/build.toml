@@ -82,4 +82,13 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetUserService"]
 
+[function_build_definitions.a10d5dbb-701a-4e25-8cb5-0370db14ace7]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetLessonRequestService"]
+
 [layer_build_definitions]
