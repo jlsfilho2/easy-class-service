@@ -1,4 +1,4 @@
-package dynamo.user
+package dynamo.user.register
 
 interface RegisterUserService {
     fun saveUser(requestBody: String?, registerRole: String)

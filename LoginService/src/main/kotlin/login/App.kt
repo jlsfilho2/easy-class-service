@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import dynamo.DynamoDBUtils
-import dynamo.user.RegisterUserRepository
+import dynamo.user.register.RegisterUserRepository
 import models.auth.LoginRequest
 import requests.requestResponse
 import java.io.IOException

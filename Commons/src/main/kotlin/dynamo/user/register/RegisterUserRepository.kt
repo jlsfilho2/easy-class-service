@@ -1,4 +1,4 @@
-package dynamo.user
+package dynamo.user.register
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList
