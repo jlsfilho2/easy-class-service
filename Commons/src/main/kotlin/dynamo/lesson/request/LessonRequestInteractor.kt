@@ -5,17 +5,18 @@ class LessonRequestInteractor(
 ) {
 
     fun doGetLessonRequest(lessonRequestId: String?, teacherId: String?, studentId: String?): String? {
+        println("Is inside interactor method")
         return when {
             lessonRequestId != null -> {
-                println(lessonRequestId)
+                println("Lesson request id is not null $lessonRequestId")
                 repository.getLessonRequestById(lessonRequestId)
             }
             teacherId != null -> {
-                println(teacherId)
+                println("Teacher id is not null $teacherId")
                 repository.getLessonRequestByTeacherId(teacherId)
             }
             studentId != null -> {
-                println(studentId)
+                println("Student id is not null $studentId")
                 repository.getLessonRequestByStudentId(studentId)
             }
             else -> {

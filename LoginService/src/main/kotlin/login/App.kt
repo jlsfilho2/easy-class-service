@@ -14,7 +14,7 @@ class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseE
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
         val loginRequest = DynamoDBUtils.objectMapper.readValue(input?.body, LoginRequest::class.java)
         val registerUserRepository = RegisterUserRepository()
-        val data = registerUserRepository.getUserByRemoteId(loginRequest.userRemoteId)
+        val data = registerUserRepository.getUserByRemoteId(loginRequest)
 
         return try {
             requestResponse(data = data, status = 200)
