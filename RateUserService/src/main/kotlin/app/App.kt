@@ -4,28 +4,26 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import dynamo.lesson.request.LessonRequestInteractor
+import dynamo.lesson.LessonRepository
+import ext.isNotNull
 import requests.requestResponse
 import java.io.IOException
 
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
-        val interactor = LessonRequestInteractor()
-        val teacherId = input?.queryStringParameters?.get("teacherId")
-        val studentId = input?.queryStringParameters?.get("studentId")
-        val lessonRequestId = input?.queryStringParameters?.get("lessonRequestId")
+        val repository = LessonRepository()
 
-        val data = interactor.doGetLessonRequest(
-            teacherId = teacherId,
-            studentId = studentId,
-            lessonRequestId = lessonRequestId
-        )
+        if (input?.body?.isNotNull() == true) {
+            repository.rateLesson(input.body)
+        } else {
+            return requestResponse(data = "Your request body can't be empty", status = 400)
+        }
 
         return try {
-            requestResponse(data = data, status = 200)
+            requestResponse(status = 200)
         } catch (exception: IOException) {
-            requestResponse(data = null, status = 500)
+            requestResponse(status = 500)
         }
     }
 

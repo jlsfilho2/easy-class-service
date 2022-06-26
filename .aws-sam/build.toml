@@ -91,4 +91,22 @@ manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetLessonRequestService"]
 
+[function_build_definitions.127b26f5-2985-432f-a0bd-10220c6a7f7c]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/UpdateLessonStatusService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["UpdateLessonStatusService"]
+
+[function_build_definitions.31e4e311-a986-46a7-88c2-0b88e33f7925]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/RateUserService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["RateUserService"]
+
 [layer_build_definitions]

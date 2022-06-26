@@ -1,5 +1,7 @@
 package dynamo.lesson.request
 
+import ext.isNotNull
+
 class LessonRequestInteractor(
     private val repository: LessonRequestRepository = LessonRequestRepository()
 ) {
@@ -7,15 +9,15 @@ class LessonRequestInteractor(
     fun doGetLessonRequest(lessonRequestId: String?, teacherId: String?, studentId: String?): String? {
         println("Is inside interactor method")
         return when {
-            lessonRequestId != null -> {
+            !lessonRequestId.isNullOrBlank() -> {
                 println("Lesson request id is not null $lessonRequestId")
                 repository.getLessonRequestById(lessonRequestId)
             }
-            teacherId != null -> {
+            !teacherId.isNullOrBlank() -> {
                 println("Teacher id is not null $teacherId")
                 repository.getLessonRequestByTeacherId(teacherId)
             }
-            studentId != null -> {
+            !studentId.isNullOrBlank() -> {
                 println("Student id is not null $studentId")
                 repository.getLessonRequestByStudentId(studentId)
             }

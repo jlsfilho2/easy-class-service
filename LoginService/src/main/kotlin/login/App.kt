@@ -13,8 +13,7 @@ import java.io.IOException
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
         val loginRequest = DynamoDBUtils.objectMapper.readValue(input?.body, LoginRequest::class.java)
-        val registerUserRepository = RegisterUserRepository()
-        val data = registerUserRepository.getUserByRemoteId(loginRequest)
+        val data = RegisterUserRepository().getUserByRemoteId(loginRequest.userRemoteId.orEmpty())
 
         return try {
             requestResponse(data = data, status = 200)

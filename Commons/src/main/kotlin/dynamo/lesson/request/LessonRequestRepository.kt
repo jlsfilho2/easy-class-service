@@ -43,7 +43,8 @@ class LessonRequestRepository(
     }
 
     override fun updateLessonRequestStatus(lessonRequestResponse: LessonRequestResponse) {
-        val updateItemRequest = makeUpdateLessonRequest(lessonRequestResponse.lessonRequestId, lessonRequestResponse.lessonRequestStatus)
+        val updateItemRequest =
+            makeUpdateLessonRequest(lessonRequestResponse.lessonRequestId, lessonRequestResponse.lessonRequestStatus)
         DynamoDBUtils.dynamoDB.updateItem(updateItemRequest)
     }
 

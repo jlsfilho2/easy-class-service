@@ -27,6 +27,10 @@ data class Lesson(
     var startDate: String = "",
     @DynamoDBAttribute(attributeName = "endDate")
     var endDate: String = "",
+    @DynamoDBAttribute(attributeName = "teacherEvaluation")
+    var teacherEvaluation: String? = null,
+    @DynamoDBAttribute(attributeName = "studentEvaluation")
+    var studentEvaluation: String? = null,
 ) {
     companion object {
         fun makeLessonFromLessonRequest(lessonRequest: LessonRequest): Lesson {
