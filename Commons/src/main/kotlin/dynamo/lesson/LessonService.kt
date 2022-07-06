@@ -1,5 +1,7 @@
 package dynamo.lesson
 
+import models.lesson.Lesson
+
 interface LessonService {
     fun getLessonById(lessonId: String): String?
     fun getLessonByTeacherId(teacherId: String): String?

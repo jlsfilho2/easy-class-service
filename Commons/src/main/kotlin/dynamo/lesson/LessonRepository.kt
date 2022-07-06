@@ -90,11 +90,11 @@ class LessonRepository(private val mapper: ObjectMapper = jacksonObjectMapper())
         val itemKey = mapOf<String, AttributeValue>(
             "lessonId" to AttributeValue().withS(lessonRating.lessonId)
         )
-        val ratingAttributeValue = AttributeValue().withN(lessonRating.studentRating.toString())
-        val commentAttributeValue = AttributeValue().withS(lessonRating.teacherComments)
+        val ratingAttributeValue = AttributeValue().withN(lessonRating.teacherRating.toString())
+        val commentAttributeValue = AttributeValue().withS(lessonRating.studentComments)
         val updatedValues = mutableMapOf<String, AttributeValueUpdate>(
-            "studentRating" to AttributeValueUpdate().withValue(ratingAttributeValue),
-            "teacherComments" to AttributeValueUpdate().withValue(commentAttributeValue)
+            "teacherRating" to AttributeValueUpdate().withValue(ratingAttributeValue),
+            "studentComments" to AttributeValueUpdate().withValue(commentAttributeValue)
         )
 
         return UpdateItemRequest(tableName, itemKey, updatedValues)
@@ -105,11 +105,11 @@ class LessonRepository(private val mapper: ObjectMapper = jacksonObjectMapper())
         val itemKey = mapOf<String, AttributeValue>(
             "lessonId" to AttributeValue().withS(lessonRating.lessonId)
         )
-        val ratingAttributeValue = AttributeValue().withN(lessonRating.teacherRating.toString())
-        val commentAttributeValue = AttributeValue().withS(lessonRating.studentComments)
+        val ratingAttributeValue = AttributeValue().withN(lessonRating.studentRating.toString())
+        val commentAttributeValue = AttributeValue().withS(lessonRating.teacherComments)
         val updatedValues = mutableMapOf<String, AttributeValueUpdate>(
-            "teacherRating" to AttributeValueUpdate().withValue(ratingAttributeValue),
-            "studentComments" to AttributeValueUpdate().withValue(commentAttributeValue)
+            "studentRating" to AttributeValueUpdate().withValue(ratingAttributeValue),
+            "teacherComments" to AttributeValueUpdate().withValue(commentAttributeValue)
         )
 
         return UpdateItemRequest(tableName, itemKey, updatedValues)
@@ -126,11 +126,10 @@ class LessonRepository(private val mapper: ObjectMapper = jacksonObjectMapper())
     private fun updateStudentRating(lessonRating: LessonRating) {
         val studentJson = UserUseCase.getUserById(lessonRating.studentId.orEmpty())
         val student = mapper.readValue<User>(studentJson.orEmpty())
-        val studentLessons = student.lessons.map { lessonId ->
-            val lessonJson = getLessonById(lessonId)
-            mapper.readValue<Lesson>(lessonJson.orEmpty())
-        }
-        val completedLessons = studentLessons.filter { lesson -> lesson.status == "CONCLUDED" }
+        val completedLessons = getCompletedLessons(
+            userId = lessonRating.studentId.orEmpty(),
+            userRole = "studentId"
+        )
         val studentRating = lessonRating.studentRating ?: 0
         val newStudentRating = calcNewRating(
             actualRating = student.rating,
@@ -147,11 +146,10 @@ class LessonRepository(private val mapper: ObjectMapper = jacksonObjectMapper())
     private fun updateTeacherRating(lessonRating: LessonRating) {
         val teacherJson = UserUseCase.getUserById(lessonRating.teacherId.orEmpty())
         val teacher = mapper.readValue<User>(teacherJson.orEmpty())
-        val teacherLessons = teacher.lessons.map { lessonId ->
-            val lessonJson = getLessonById(lessonId)
-            mapper.readValue<Lesson>(lessonJson.orEmpty())
-        }
-        val completedLessons = teacherLessons.filter { lesson -> lesson.status == "CONCLUDED" }
+        val completedLessons = getCompletedLessons(
+            userId = lessonRating.teacherId.orEmpty(),
+            userRole = "teacherId"
+        )
         val teacherRating = lessonRating.teacherRating ?: 0
         val newTeacherRating = calcNewRating(
             actualRating = teacher.rating,
@@ -163,6 +161,30 @@ class LessonRepository(private val mapper: ObjectMapper = jacksonObjectMapper())
             rating = newTeacherRating
         )
         DynamoDBUtils.dynamoDB.updateItem(teacherRatingUpdateItemRequest)
+    }
+
+    private fun getCompletedLessons(userId: String, userRole: String): List<Lesson?> {
+        val eav = makeExpressionAttributeValueForCompletedLessonsById(userId = userId, userRole = userRole)
+        val ean = makeExpressionAttributeNamesForCompletedLessons(userRole)
+        val scanExpression = DynamoDBScanExpression()
+            .withFilterExpression("#status = :status and #$userRole = :$userRole")
+            .withExpressionAttributeValues(eav)
+            .withExpressionAttributeNames(ean)
+        return DynamoDBUtils.mapper.scan(Lesson::class.java, scanExpression)
+    }
+
+    private fun makeExpressionAttributeValueForCompletedLessonsById(userId: String, userRole: String): Map<String, AttributeValue> {
+        return mapOf<String, AttributeValue>(
+            ":$userRole" to AttributeValue().withS(userId),
+            ":status" to AttributeValue().withS("CONCLUDED")
+        )
+    }
+
+    private fun makeExpressionAttributeNamesForCompletedLessons(userRole: String): Map<String, String> {
+        return mapOf(
+            "#status" to "status",
+            "#$userRole" to userRole
+        )
     }
 
     private fun calcNewRating(actualRating: Int, newRating: Int, completedLessons: Int): Int {
