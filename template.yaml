@@ -17,7 +17,7 @@ Resources:
       StageName: Prod
       Cors:
         AllowMethods: "'POST, GET, PUT'"
-        AllowHeaders: "'X-Forwarded-For'"
+        AllowHeaders: "'*'"
         AllowOrigin: "'http://localhost:3000'"
         MaxAge: "'600'"
         AllowCredentials: true

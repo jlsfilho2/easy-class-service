@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import dynamo.DynamoDBUtils
 import dynamo.user.register.RegisterUserRepository
 import models.auth.LoginRequest
+import requests.HttpVerb
 import requests.requestResponse
 import java.io.IOException
 
@@ -16,9 +17,16 @@ class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseE
         val data = RegisterUserRepository().getUserByRemoteId(loginRequest.userRemoteId.orEmpty())
 
         return try {
-            requestResponse(data = data, status = 200)
+            requestResponse(
+                data = data,
+                status = 200,
+                httpVerb = HttpVerb.POST
+            )
         } catch (exception: IOException) {
-            requestResponse(data = null, status = 500)
+            requestResponse(
+                data = null,
+                status = 500,
+                httpVerb = HttpVerb.POST)
         }
     }
 }

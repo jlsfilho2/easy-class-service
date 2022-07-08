@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import dynamo.user.register.RegisterUserRepository
+import requests.HttpVerb
 import requests.requestResponse
 import java.io.IOException
 
@@ -19,9 +20,9 @@ class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseE
         )
 
         return try {
-            requestResponse(status = 200)
+            requestResponse(status = 200, httpVerb = HttpVerb.POST)
         } catch (exception: IOException) {
-            requestResponse(status = 500)
+            requestResponse(status = 500, httpVerb = HttpVerb.POST)
         }
     }
 
