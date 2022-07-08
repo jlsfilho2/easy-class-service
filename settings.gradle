@@ -1,8 +1,14 @@
-include 'GetTeacherService',
+include 'Commons',
+        'GetTeacherService',
         'SaveTeacherService',
         'GetStudentService',
         'SaveStudentService',
         'GetLessonService',
         'RegisterUserService',
         'LoginService',
-        'Commons'
+        'SendLessonRequestService',
+        'ResponseLessonRequestService',
+        'GetUserService',
+        'GetLessonRequestService',
+        'UpdateLessonStatusService',
+        'RateUserService'

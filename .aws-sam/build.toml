@@ -5,7 +5,7 @@
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetTeacherService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetTeacherService"]
@@ -23,7 +23,7 @@ functions = ["SaveTeacherService"]
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetStudentService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["GetStudentService"]
@@ -50,9 +50,63 @@ functions = ["RegisterUserService"]
 codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/LoginService"
 runtime = "java11"
 architecture = "x86_64"
-handler = "app.App::handleRequest"
+handler = "response.App::handleRequest"
 manifest_hash = ""
 packagetype = "Zip"
 functions = ["LoginService"]
+
+[function_build_definitions.93808bca-0b5e-43b9-9f9c-499dd41f897a]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/SendLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "lessonrequest.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["SendLessonRequestService"]
+
+[function_build_definitions.34c85e2b-4056-408b-b318-1ea81a50fe7c]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/ResponseLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "response.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["ResponseLessonRequestService"]
+
+[function_build_definitions.be1e503d-9b7f-444b-ba37-4cde924ea128]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetUserService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetUserService"]
+
+[function_build_definitions.a10d5dbb-701a-4e25-8cb5-0370db14ace7]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/GetLessonRequestService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["GetLessonRequestService"]
+
+[function_build_definitions.127b26f5-2985-432f-a0bd-10220c6a7f7c]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/UpdateLessonStatusService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["UpdateLessonStatusService"]
+
+[function_build_definitions.31e4e311-a986-46a7-88c2-0b88e33f7925]
+codeuri = "/mnt/d/Projects/Faculdade/EasyClass/EasyClassService/easy-class-service/RateUserService"
+runtime = "java11"
+architecture = "x86_64"
+handler = "app.App::handleRequest"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["RateUserService"]
 
 [layer_build_definitions]

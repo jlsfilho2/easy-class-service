@@ -4,22 +4,32 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
-import dynamo.DynamoDBUtils
-import dynamo.user.RegisterUserRepository
-import models.auth.LoginRequest
+import dynamo.lesson.LessonRepository
+import ext.isNotNull
+import requests.HttpVerb
 import requests.requestResponse
 import java.io.IOException
 
 class App : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
     override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
-        val loginRequest = DynamoDBUtils.objectMapper.readValue(input?.body, LoginRequest::class.java)
-        val registerUserRepository = RegisterUserRepository()
-        val data = registerUserRepository.getUserByRemoteId(loginRequest.userRemoteId)
+        val repository = LessonRepository()
+
+        if (input?.body?.isNotNull() == true) {
+            repository.rateLesson(input.body)
+        } else {
+            return requestResponse(
+                data = "Your request body can't be empty",
+                status = 400,
+                httpVerb = HttpVerb.POST
+            )
+        }
 
         return try {
-            requestResponse(data = data, status = 200)
+            requestResponse(status = 200, httpVerb = HttpVerb.POST)
         } catch (exception: IOException) {
-            requestResponse(data = null, status = 500)
+            requestResponse(status = 500, httpVerb = HttpVerb.POST)
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package dynamo.user
+package dynamo.user.register
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList
@@ -33,6 +33,7 @@ class RegisterUserRepository : RegisterUserService {
         return DynamoDBUtils.objectMapper.writeValueAsString(user)
     }
 
+
     private fun saveStudent(user: User) {
         user.userId = generateUUID()
         user.role = Role.STUDENT.name
@@ -48,4 +49,5 @@ class RegisterUserRepository : RegisterUserService {
     private fun scanUser(scanExpression: DynamoDBScanExpression): PaginatedScanList<User>? {
         return DynamoDBUtils.mapper.scan(User::class.java, scanExpression)
     }
+
 }

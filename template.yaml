@@ -17,7 +17,7 @@ Resources:
       StageName: Prod
       Cors:
         AllowMethods: "'POST, GET, PUT'"
-        AllowHeaders: "'X-Forwarded-For'"
+        AllowHeaders: "'*'"
         AllowOrigin: "'http://localhost:3000'"
         MaxAge: "'600'"
         AllowCredentials: true
@@ -151,7 +151,7 @@ Resources:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: LoginService
-      Handler: app.App::handleRequest
+      Handler: login.App::handleRequest
       Runtime: java11
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -171,4 +171,156 @@ Resources:
               Action:
                 - dynamodb:*
               Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/user"
+  SendLessonRequestService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: SendLessonRequestService
+      Handler: lessonrequest.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        SendLessonRequest:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /lesson-request
+            Method: post
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lessonrequest"
+  ResponseLessonRequestService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ResponseLessonRequestService
+      Handler: response.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        ResponseLessonRequest:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /lesson-request-response
+            Method: put
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lessonrequest"
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lesson"
+  GetUserService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: GetUserService
+      Handler: app.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /user
+            Method: get
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/user"
+  GetLessonRequestService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: GetLessonRequestService
+      Handler: app.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetLessonRequest:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /lesson-request
+            Method: get
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lessonrequest"
+  UpdateLessonStatusService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UpdateLessonStatusService
+      Handler: app.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        UpdateLessonStatus:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /update-lesson
+            Method: put
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lesson"
+  RateUserService:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: RateUserService
+      Handler: app.App::handleRequest
+      Runtime: java11
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        RateUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /rate
+            Method: post
+            RestApiId: !Ref ApiGatewayApi
+      Policies:
+        - Statement:
+            - Sid: DynamoDBWritePolicy
+              Effect: Allow
+              Action:
+                - dynamodb:*
+              Resource:
+                - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/lesson"
                 - !Sub "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/user"
